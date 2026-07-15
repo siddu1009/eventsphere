@@ -1,3 +1,3 @@
 package com.eventsphere.entity;
 
-public enum BookingStatus { CONFIRMED, CANCELLED }
+public enum BookingStatus { PENDING_PAYMENT, CONFIRMED, CANCELLED }

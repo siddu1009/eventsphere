@@ -30,6 +30,12 @@ export async function registerUser(payload) {
   return response.json();
 }
 
+export async function fetchEvent(id) {
+  const response = await fetch(`${API_BASE_URL}/events/${id}`);
+  if (!response.ok) throw new Error('Failed to load event');
+  return response.json();
+}
+
 export async function authorizedRequest(path, token, options = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
@@ -42,11 +48,15 @@ export async function authorizedRequest(path, token, options = {}) {
   return response.status === 204 ? null : response.json();
 }
 
-export function createBooking(token, eventId, quantity) {
-  return authorizedRequest('/bookings', token, { method: 'POST', body: JSON.stringify({ eventId, quantity }) });
+export function createBooking(token, payload) {
+  return authorizedRequest('/bookings', token, { method: 'POST', body: JSON.stringify(payload) });
 }
 
 export function fetchBookings(token) { return authorizedRequest('/bookings', token); }
+export function fetchUserBookings(token) { return authorizedRequest('/users/bookings', token); }
+export function fetchBooking(token, bookingId) { return authorizedRequest(`/bookings/${bookingId}`, token); }
+export function createPayment(token, bookingId, method) { return authorizedRequest('/payments', token, { method: 'POST', body: JSON.stringify({ bookingId, method }) }); }
+export function fetchTicket(token, bookingId) { return authorizedRequest(`/tickets/${bookingId}`, token); }
 
 export function cancelBooking(token, bookingId) { return authorizedRequest(`/bookings/${bookingId}/cancel`, token, { method: 'POST' }); }
 

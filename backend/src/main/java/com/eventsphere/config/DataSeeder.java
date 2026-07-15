@@ -33,7 +33,7 @@ public class DataSeeder {
     public CommandLineRunner seedEvents() {
         return args -> {
             for (String name : java.util.List.of("Music", "Technology", "Business", "Education", "Gaming", "Sports")) seedCategory(name);
-            seedUser("Demo Organizer", "organizer@eventsphere.local", Role.ORGANIZER);
+            seedUser("Demo Organizer", "organizer@eventsphere.com", Role.ORGANIZER);
             seedUser("Demo Admin", "admin@eventsphere.local", Role.ADMIN);
             if (eventRepository.count() == 0) {
                 EventEntity first = new EventEntity();
@@ -42,7 +42,7 @@ public class DataSeeder {
                 first.setCategory("Technology");
                 first.setLocation("Bengaluru, Karnataka");
                 first.setOrganizer("Northstar India");
-                first.setOrganizerEmail("organizer@eventsphere.local");
+                first.setOrganizerEmail("organizer@eventsphere.com");
                 first.setImageUrl("https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=800&q=80");
                 first.setPrice("₹1,499");
                 first.setSeatsLeft(24);
