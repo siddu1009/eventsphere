@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "bookings")
+@Table(name = "bookings", indexes = {
+        @Index(name = "idx_bookings_user_email", columnList = "user_email"),
+        @Index(name = "idx_bookings_event_id", columnList = "event_id")
+})
 public class BookingEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

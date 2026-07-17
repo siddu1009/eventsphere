@@ -17,7 +17,7 @@ export async function loginUser(email, password) {
     body: JSON.stringify({ email, password }),
   });
   if (!response.ok) throw new Error((await response.json().catch(() => ({}))).message || 'Login failed');
-  return response.json();
+  return normalizeAuthResponse(await response.json());
 }
 
 export async function registerUser(payload) {
@@ -27,13 +27,26 @@ export async function registerUser(payload) {
     body: JSON.stringify(payload),
   });
   if (!response.ok) throw new Error((await response.json().catch(() => ({}))).message || 'Registration failed');
-  return response.json();
+  return normalizeAuthResponse(await response.json());
 }
 
 export async function fetchEvent(id) {
   const response = await fetch(`${API_BASE_URL}/events/${id}`);
   if (!response.ok) throw new Error('Failed to load event');
   return response.json();
+}
+
+function normalizeAuthResponse(payload) {
+  const role = String(payload?.role || payload?.user?.role || 'USER').replace(/^ROLE_/, '').toUpperCase();
+  const token = payload?.token || payload?.accessToken || payload?.jwt;
+  return {
+    ...payload,
+    token,
+    email: payload?.email || payload?.user?.email || '',
+    name: payload?.name || payload?.user?.name || '',
+    phone: payload?.phone || payload?.user?.phone || '',
+    role,
+  };
 }
 
 export async function authorizedRequest(path, token, options = {}) {
@@ -67,6 +80,7 @@ export function fetchOrganizerEvents(token) { return authorizedRequest('/organiz
 export function fetchAttendees(token, id) { return authorizedRequest(`/organizer/events/${id}/attendees`, token); }
 export function fetchOrganizerAnalytics(token) { return authorizedRequest('/organizer/analytics', token); }
 export function fetchAdminUsers(token) { return authorizedRequest('/admin/users', token); }
+export function searchAdminUsers(token, query) { return authorizedRequest(`/admin/users/search?query=${encodeURIComponent(query)}`, token); }
 export function updateAdminUser(token, id, update) { return authorizedRequest(`/admin/users/${id}`, token, { method: 'PUT', body: JSON.stringify(update) }); }
 export function fetchAdminStatistics(token) { return authorizedRequest('/admin/statistics', token); }
 export function fetchAdminReports(token) { return authorizedRequest('/admin/reports', token); }

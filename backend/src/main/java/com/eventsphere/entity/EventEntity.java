@@ -26,6 +26,7 @@ public class EventEntity {
     @Size(max = 2048) private String imageUrl;
     @NotBlank @Size(max = 40) private String price;
     @NotNull @Min(0) private Integer seatsLeft;
+    @NotNull @Min(1) @Column(nullable = false, columnDefinition = "integer not null default 10") private Integer maxTicketsPerBooking = 10;
     @NotNull private LocalDate startDate;
     @NotNull private LocalTime startTime;
     @Pattern(regexp = "DRAFT|PUBLISHED", message = "Status must be DRAFT or PUBLISHED") private String status = "PUBLISHED";
@@ -105,6 +106,10 @@ public class EventEntity {
     public void setSeatsLeft(Integer seatsLeft) {
         this.seatsLeft = seatsLeft;
     }
+
+    public Integer getMaxTicketsPerBooking() { return maxTicketsPerBooking; }
+
+    public void setMaxTicketsPerBooking(Integer maxTicketsPerBooking) { this.maxTicketsPerBooking = maxTicketsPerBooking; }
 
     public LocalDate getStartDate() {
         return startDate;

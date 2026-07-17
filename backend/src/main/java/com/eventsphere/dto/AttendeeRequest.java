@@ -1,22 +1,20 @@
 package com.eventsphere.dto;
-import jakarta.validation.constraints.*;
-import jakarta.validation.Valid;
-import java.util.List;
-public class BookingRequest {
-    @NotNull private Long eventId;
-    @NotNull @Min(1) private Integer quantity;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
+public class AttendeeRequest {
     @NotBlank private String fullName;
     @NotBlank @Email private String email;
     @NotBlank @Pattern(regexp = "\\d{10}", message = "Phone number must be 10 digits") private String phone;
-    @NotBlank private String gender;
-    @NotNull @Min(1) private Integer age;
-    @NotBlank private String address;
-    @NotBlank private String city;
-    @NotBlank private String state;
-    @NotBlank private String pinCode;
-    @Valid private List<AttendeeRequest> attendees;
-    public Long getEventId(){return eventId;} public void setEventId(Long eventId){this.eventId=eventId;}
-    public Integer getQuantity(){return quantity;} public void setQuantity(Integer quantity){this.quantity=quantity;}
+    private String gender;
+    private Integer age;
+    private String address;
+    private String city;
+    private String state;
+    private String pinCode;
+
     public String getFullName() { return fullName; } public void setFullName(String fullName) { this.fullName = fullName; }
     public String getEmail() { return email; } public void setEmail(String email) { this.email = email; }
     public String getPhone() { return phone; } public void setPhone(String phone) { this.phone = phone; }
@@ -26,5 +24,4 @@ public class BookingRequest {
     public String getCity() { return city; } public void setCity(String city) { this.city = city; }
     public String getState() { return state; } public void setState(String state) { this.state = state; }
     public String getPinCode() { return pinCode; } public void setPinCode(String pinCode) { this.pinCode = pinCode; }
-    public List<AttendeeRequest> getAttendees() { return attendees; } public void setAttendees(List<AttendeeRequest> attendees) { this.attendees = attendees; }
 }

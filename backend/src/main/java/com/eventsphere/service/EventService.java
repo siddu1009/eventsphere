@@ -41,7 +41,7 @@ public class EventService {
         event.setTitle(update.getTitle()); event.setDescription(update.getDescription()); event.setCategory(update.getCategory());
         event.setLocation(update.getLocation()); event.setOrganizer(update.getOrganizer()); event.setImageUrl(update.getImageUrl());
         event.setPrice(update.getPrice()); event.setSeatsLeft(update.getSeatsLeft()); event.setStartDate(update.getStartDate());
-        event.setStartTime(update.getStartTime()); event.setStatus(update.getStatus());
+        event.setStartTime(update.getStartTime()); event.setMaxTicketsPerBooking(update.getMaxTicketsPerBooking()); event.setStatus(update.getStatus());
         return eventRepository.save(event);
     }
 

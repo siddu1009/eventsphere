@@ -34,7 +34,7 @@ public class DataSeeder {
         return args -> {
             for (String name : java.util.List.of("Music", "Technology", "Business", "Education", "Gaming", "Sports")) seedCategory(name);
             seedUser("Demo Organizer", "organizer@eventsphere.com", Role.ORGANIZER);
-            seedUser("Demo Admin", "admin@eventsphere.local", Role.ADMIN);
+            seedUser("Demo Admin", "admin@eventsphere.com", Role.ADMIN);
             if (eventRepository.count() == 0) {
                 EventEntity first = new EventEntity();
                 first.setTitle("Bengaluru AI & Innovation Summit");

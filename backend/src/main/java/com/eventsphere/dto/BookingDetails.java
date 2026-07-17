@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public record BookingDetails(
         Long id,
@@ -26,14 +27,16 @@ public record BookingDetails(
         String ticketNumber,
         String attendeeName,
         String attendeeEmail,
+        List<AttendeeDetails> attendees,
         BigDecimal ticketAmount,
         BigDecimal convenienceFee,
         BigDecimal gst,
         BigDecimal grandTotal,
         Instant createdAt
 ) {
-    public static BookingDetails from(BookingEntity booking, EventEntity event, AttendeeEntity attendee, PaymentEntity payment) {
+    public static BookingDetails from(BookingEntity booking, EventEntity event, List<AttendeeEntity> attendees, PaymentEntity payment) {
         String paymentStatus = payment == null ? "PENDING" : payment.getStatus();
+        AttendeeEntity attendee = attendees.isEmpty() ? null : attendees.get(0);
         return new BookingDetails(
                 booking.getId(), booking.getEventId(), booking.getEventTitle(),
                 event == null ? null : event.getImageUrl(),
@@ -48,6 +51,7 @@ public record BookingDetails(
                 paymentStatus, booking.getConfirmationCode(), booking.getTicketNumber(),
                 attendee == null ? null : attendee.getFullName(),
                 attendee == null ? null : attendee.getEmail(),
+                attendees.stream().map(AttendeeDetails::from).toList(),
                 payment == null ? null : payment.getTicketAmount(),
                 payment == null ? null : payment.getConvenienceFee(),
                 payment == null ? null : payment.getGst(),

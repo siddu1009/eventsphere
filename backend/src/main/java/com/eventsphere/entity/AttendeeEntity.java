@@ -3,12 +3,13 @@ package com.eventsphere.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "attendees")
+@Table(name = "attendees", indexes = @Index(name = "idx_attendees_booking_id", columnList = "booking_id"))
 public class AttendeeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY) @JoinColumn(name = "booking_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "booking_id", nullable = false)
     private BookingEntity booking;
+    @Column(nullable = false, unique = true) private String ticketNumber;
     @Column(nullable = false) private String fullName;
     @Column(nullable = false) private String email;
     @Column(nullable = false) private String phone;
@@ -22,6 +23,8 @@ public class AttendeeEntity {
     public Long getId() { return id; }
     public BookingEntity getBooking() { return booking; }
     public void setBooking(BookingEntity booking) { this.booking = booking; }
+    public String getTicketNumber() { return ticketNumber; }
+    public void setTicketNumber(String ticketNumber) { this.ticketNumber = ticketNumber; }
     public String getFullName() { return fullName; }
     public void setFullName(String fullName) { this.fullName = fullName; }
     public String getEmail() { return email; }

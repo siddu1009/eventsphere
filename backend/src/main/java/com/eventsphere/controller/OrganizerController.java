@@ -3,6 +3,7 @@ package com.eventsphere.controller;
 import com.eventsphere.dto.UserSummary;
 import com.eventsphere.entity.BookingEntity;
 import com.eventsphere.entity.EventEntity;
+import com.eventsphere.repository.AttendeeRepository;
 import com.eventsphere.repository.BookingRepository;
 import com.eventsphere.repository.EventRepository;
 import com.eventsphere.repository.UserRepository;
@@ -19,9 +20,10 @@ public class OrganizerController {
     private final EventRepository events;
     private final BookingRepository bookings;
     private final UserRepository users;
+    private final AttendeeRepository attendees;
 
-    public OrganizerController(EventRepository events, BookingRepository bookings, UserRepository users) {
-        this.events = events; this.bookings = bookings; this.users = users;
+    public OrganizerController(EventRepository events, BookingRepository bookings, UserRepository users, AttendeeRepository attendees) {
+        this.events = events; this.bookings = bookings; this.users = users; this.attendees = attendees;
     }
 
     @GetMapping("/events")
@@ -36,6 +38,7 @@ public class OrganizerController {
             Map<String, Object> result = new LinkedHashMap<>();
             result.put("booking", booking);
             result.put("attendee", users.findByEmail(booking.getUserEmail()).map(UserSummary::from).orElse(null));
+            result.put("attendees", attendees.findByBookingIdOrderByIdAsc(booking.getId()));
             result.put("eventTitle", event.getTitle());
             return result;
         }).toList();
